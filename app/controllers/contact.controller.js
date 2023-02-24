@@ -3,27 +3,27 @@ const ContactService = require("../services/contact.service");
 const MongoDB = require("../utils/mongodb.util");
 
 
-exports.create = (req, res) =>{
-    res.send({message: "create handler"});
-};
-exports.findAll = (req, res) =>{
-    res.send({message: "findAll handler"});
-};
-exports.findOne = (req, res) =>{
-    res.send({message: "findOne handler"});
-};
-exports.update = (req, res) =>{
-    res.send({message: "update handler"});
-};
-exports.delete = (req, res) =>{
-    res.send({message: "delete handler"});
-};
-exports.deleteAll = (req, res) =>{
-    res.send({message: "deleteAll handler"});
-};
-exports.findAllFavorite = (req, res) =>{
-    res.send({message: "findAllFavorite handler"});
-};
+// exports.create = (req, res) =>{
+//     res.send({message: "create handler"});
+// };
+// exports.findAll = (req, res) =>{
+//     res.send({message: "findAll handler"});
+// };
+// exports.findOne = (req, res) =>{
+//     res.send({message: "findOne handler"});
+// };
+// exports.update = (req, res) =>{
+//     res.send({message: "update handler"});
+// };
+// exports.delete = (req, res) =>{
+//     res.send({message: "delete handler"});
+// };
+// exports.deleteAll = (req, res) =>{
+//     res.send({message: "deleteAll handler"});
+// };
+// exports.findAllFavorite = (req, res) =>{
+//     res.send({message: "findAllFavorite handler"});
+// };
 exports.findAll = async(req, res, next)=>{
     let documents = [];
     try{
@@ -41,7 +41,7 @@ exports.findAll = async(req, res, next)=>{
     }
     return res.send(documents);
 };
-exports findOne = async(req,res,next)=>{
+exports.findOne = async(req,res,next)=>{
     try{
         const contactService = new ContactService(MongoDB.client);
         const document = await contactService.findById(req.params.id);
@@ -75,7 +75,7 @@ exports.update = async(req,res,next)=>{
 exports.delete = async(req,res,next)=>{
     try{
         const contactService = new ContactService(MongoDB.client);
-        const document = await contactService.update(req.params.id);
+        const document = await contactService.delete(req.params.id);
         if(!document){
             return next(new ApiError(404,"contact not found"));
         }
@@ -86,11 +86,11 @@ exports.delete = async(req,res,next)=>{
         );
     }
 };
-exports.findAllFavorite = async(_req,res,next)=>{
+exports.findAllFavorite = async(req,res,next)=>{
     try{
         const contactService = new ContactService(MongoDB.client);
-        const document = await contactService.findFavorite();
-        return res.send(documents);
+        const documents = await contactService.findFavorite();
+        return res.send(documents); 
     }catch (error){
         return next(
             new ApiError(500, "An error occurred while retrieving contacts")
